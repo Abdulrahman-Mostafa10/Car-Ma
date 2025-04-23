@@ -1,11 +1,11 @@
 # Implementation Plan (I hope)
 
 - Project Setup and Planning (together)
-- Modeling and Design
-- Low-Level Driver Development
-- Communication and Basic Movement (2 of us)
+- Modeling and Design (George)
+- Low-Level Driver Development (Amir)
+- Communication and Basic Movement (2 of us) (Mostafa, Akram)
 - Hardware Assembly and Testing (together)
-- Parking Algorithm Implementation
+- Parking Algorithm Implementation (Samy)
 - System Integration and Refinement (together)
 
 ## Project Setup and Planning
@@ -15,7 +15,6 @@
 - [X] Set up version control and collaboration tools
 - [ ] Conduct kickoff meeting and team role assignments
 - [ ] Review project requirements and deliverables
-- [ ] Create detailed project timeline with milestones
 
 ### Research and Component Selection
 - [ ] Research similar projects and solutions
