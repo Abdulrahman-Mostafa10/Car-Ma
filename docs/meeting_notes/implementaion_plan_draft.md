@@ -3,9 +3,9 @@
 - Project Setup and Planning (together)
 - Modeling and Design (George)
 - Low-Level Driver Development (Amir)
-- Communication and Basic Movement (2 of us) (Mostafa, Akram)
+- Communication and Basic Movement (2 of us) (Mostafa, Akram) feedboack
 - Hardware Assembly and Testing (together)
-- Parking Algorithm Implementation (Samy)
+- Parking Algorithm Implementation (Samy) (integration)
 - System Integration and Refinement (together)
 
 ## Project Setup and Planning
