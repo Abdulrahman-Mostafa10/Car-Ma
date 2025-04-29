@@ -7,7 +7,7 @@
 #define TRIG_PIN 9
 #define ECHO_PIN 10
 
-#define LIGHT_SPEED 0.034 // cm/us
+#define SONAR_SPEED 0.034 // cm/us
 
 long duration;
 int distance; // distance in cm
@@ -36,7 +36,7 @@ void loop() {
   duration = pulseIn(ECHO_PIN, HIGH);
 
   // Calculate the distance
-  distance = duration * LIGHT_SPEED / 2;
+  distance = duration * SONAR_SPEED / 2;
 
   Serial.print("Distance: ");
   Serial.print(distance);
