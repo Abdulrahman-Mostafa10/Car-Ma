@@ -1,16 +1,15 @@
 // Author: Amir Kedis
 // This file Meant to drive the sonar sensor
-// with easy to understand interface 
+// with easy to understand interface
 // it uses Arduino functions for now.
-
 
 #ifndef ULTRASONIC_H
 #define ULTRASONIC_H
 
 #include <Arduino.h>
 
-
-class Ultrasonic {
+class Ultrasonic
+{
 private:
   uint8_t trig_pin;
   uint8_t echo_pin;
@@ -23,7 +22,7 @@ public:
 
   void begin();
   float measureDistanceCm();
-  unsigned long getDuration(); 
+  unsigned long getDuration();
 };
 
 #endif
