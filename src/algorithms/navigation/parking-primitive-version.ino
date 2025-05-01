@@ -12,6 +12,7 @@
 #define trig_pin_3 A4
 #define echo_pin_3 A5
 
+// variables to miss with
 #define min_side_distance 20
 #define min_front_distance 15
 #define max_reading_distance 200
@@ -25,13 +26,11 @@ Bluetooth bluetooth_module(9600);
 bool has_turned = false;
 bool has_parked = false;
 
+// another group of variables to miss with
 unsigned long turning_speed = 125;
 unsigned long turning_time = 800;
 unsigned long moving_time = 200;
 unsigned long moving_speed = 125;
-
-bool stop = true;
-bool reset = false;
 
 void setup() {
   Serial.begin(9600);

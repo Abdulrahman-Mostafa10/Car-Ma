@@ -1,7 +1,6 @@
 #include "ultrasonic.h"
-#include <Arduino.h>
 #include "bluetooth.h"
-#include "motor.h"
+#include <Arduino.h>
 
 #define trig_pin_1 A0
 #define echo_pin_1 A1
@@ -12,9 +11,9 @@
 #define trig_pin_3 A4
 #define echo_pin_3 A5
 
-#define min_side_distance 20
-#define min_front_distance 15
-#define max_reading_distance 200
+#define min_side_distance 25.0
+#define min_front_distance 15.0
+#define max_reading_distance 200.0
 
 Ultrasonic right_sensor_1(trig_pin_1, echo_pin_1);
 Ultrasonic right_sensor_2(trig_pin_2, echo_pin_2);
@@ -25,12 +24,13 @@ Bluetooth bluetooth_module(9600);
 bool has_turned = false;
 bool has_parked = false;
 
-unsigned long turning_speed = 125;
+unsigned long turning_speed = 145;
 unsigned long turning_time = 800;
-unsigned long moving_time = 200;
-unsigned long moving_speed = 125;
+unsigned long moving_time = 100;
+unsigned long moving_speed = 135;
+unsigned long after_turn_time = 100;
 
-bool stop = true;
+bool stop_flag = true;
 bool reset = false;
 
 void setup() {
@@ -49,23 +49,24 @@ void loop() {
 
   if (bluetooth_module.available())
   {
-      char command = bluetooth_module.read();
+      
+      char command = Serial.read();
       switch (command)
       {
-        case 'R':
+        case '1':
             Serial.println("Reset pressed");
             reset = true;
-            stop = false;
+            stop_flag = false;
             break;
-        case 'S':
-            Serial.println("Stop pressed");
+        case '2':
+            Serial.println("stop pressed");
             reset = false;
-            stop = true;
+            stop_flag = true;
             break;
-        case 'P':
+        case '3':
             Serial.println("Parking pressed");
             reset = false;
-            stop = false;
+            stop_flag = false;
             break;
         default:
             Serial.println("Unknown command received");
@@ -77,12 +78,12 @@ void loop() {
     has_turned = false;
     has_parked = false;
     stop();
+    Serial.println("in reset mode");
     delay(1000);
 
-    stop = false;
+    stop_flag = true;
     reset = false;
   }
-
 
 
   float distance_1 = right_sensor_1.measureDistanceCm();
@@ -99,37 +100,40 @@ void loop() {
 
 
   // avoiding noise
-  if(distance_1 > max_reading_distance || distance_2 > max_reading_distance);  
+  if(distance_1 > max_reading_distance || distance_2 > max_reading_distance) {
+    Serial.println("Skipping reading outlier");
+    Serial.println(max_reading_distance); 
     return;     // do nothing
+  }
 
   // Stoping motors state
-  if(stop || (has_turned && has_parked)) {
+  if(stop_flag || (has_turned && has_parked)) {
     stop();
   }
       
   // Turning right state
-  else if (distance_1 > min_side_distance && distance_2 > min_side_distance && !has_turned) {
+  else if (!has_turned && distance_1 > min_side_distance && distance_2 > min_side_distance) {
     Serial.println("Both sensors are clear");
-    digitalWrite(led, HIGH);
-
     stop();
     delay(500);
-    turn_right_for_millis(speed, turning_time);
+    turn_right_for_millis(turning_speed, turning_time);
 
     has_turned = true; // return to default state
   }
 
+  else if(has_turned){
+    move_forward_for_millis(moving_speed , after_turn_time);
+    if(distance_3 < min_front_distance){
+      has_parked = true;                  // move to stop state
+      Serial.println("Done Parking!!");
+    }
+
+  }
+  
   // Default state: move forward slowly
   else {
-    move_forward_for_millis(speed , moving_time);
-    if(distance_3 < min_front_distance)
-      has_parked = true;  // move to stop state 
+    move_forward_for_millis(moving_speed , moving_time);
   }
 
   delay(500);
 }
-
-
-
-
-
