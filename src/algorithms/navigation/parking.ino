@@ -11,7 +11,7 @@
 #define trig_pin_3 A4
 #define echo_pin_3 A5
 
-#define min_side_distance 25.0
+#define min_side_distance 30.0
 #define min_front_distance 15.0
 #define max_reading_distance 200.0
 
@@ -25,8 +25,8 @@ bool has_turned = false;
 bool has_parked = false;
 
 unsigned long turning_speed = 145;
-unsigned long turning_time = 800;
-unsigned long moving_time = 100;
+unsigned long turning_time = 850;
+unsigned long moving_time = 75;
 unsigned long moving_speed = 135;
 unsigned long after_turn_time = 100;
 
@@ -95,8 +95,8 @@ void loop() {
   Serial.println(distance_2);
 
   float distance_3 = front_sensor.measureDistanceCm();
-  Serial.print("Distance 3: ");
-  Serial.println(distance_3);
+  // Serial.print("Distance 3: ");
+  // Serial.println(distance_3);
 
 
   // avoiding noise
