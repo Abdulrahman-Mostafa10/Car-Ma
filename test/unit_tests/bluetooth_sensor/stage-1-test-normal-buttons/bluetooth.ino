@@ -12,6 +12,10 @@ void loop()
     if (bt.available())
     {
         char command = bt.read();
+#ifdef IGNORE_ZERO
+        if (command == '0')
+            return;
+#endif
         Serial.print("Received: '");
         Serial.print(command);
         Serial.print("' (ASCII: ");
@@ -19,17 +23,14 @@ void loop()
         Serial.println(")");
         switch (command)
         {
-        case 'U':
-            Serial.println("Up pressed");
-            break;
-        case 'D':
-            Serial.println("Down pressed");
-            break;
-        case 'L':
-            Serial.println("Left pressed");
-            break;
         case 'R':
-            Serial.println("Right pressed");
+            Serial.println("Reset pressed");
+            break;
+        case 'S':
+            Serial.println("Start pressed");
+            break;
+        case 'P':
+            Serial.println("Parking pressed");
             break;
         default:
             Serial.println("Unknown command received");
