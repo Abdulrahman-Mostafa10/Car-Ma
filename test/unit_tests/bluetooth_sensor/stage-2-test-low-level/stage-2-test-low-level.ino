@@ -1,39 +1,50 @@
 #include "bluetooth.h"
-Bluetooth bt(9600);
+
+Bluetooth bt(9600); // HC-05 default baud rate
+
 void setup()
 {
-    Serial.begin(9600);
+    // Only use Serial for setup diagnostics (disconnect HC-05 TX before upload)
+    // Serial.begin(9600);
+    Serial.println("Setting up Bluetooth...");
+
     bt.begin();
     bt.send("Arduino Ready!\n");
-    Serial.println("Bluetooth initialized. Waiting for commands...");
 }
+
 void loop()
 {
     if (bt.available())
     {
         char command = bt.read();
+
 #ifdef IGNORE_ZERO
         if (command == '0')
             return;
 #endif
-        Serial.print("Received: '");
-        Serial.print(command);
-        Serial.print("' (ASCII: ");
-        Serial.print((int)command);
-        Serial.println(")");
+
+        bt.send("Received: '");
+        bt.send(&command);
+        bt.send("' (ASCII: ");
+
+        char asciiBuf[5];
+        itoa((int)command, asciiBuf, 10);
+        bt.send(asciiBuf);
+        bt.send(")\n");
+
         switch (command)
         {
-        case 'R':
-            Serial.println("Reset pressed");
+        case '1':
+            bt.send("Reset pressed\n");
             break;
-        case 'S':
-            Serial.println("Start pressed");
+        case '2':
+            bt.send("Start pressed\n");
             break;
-        case 'P':
-            Serial.println("Parking pressed");
+        case '3':
+            bt.send("Parking pressed\n");
             break;
         default:
-            Serial.println("Unknown command received");
+            bt.send("Unknown command received\n");
             break;
         }
     }
